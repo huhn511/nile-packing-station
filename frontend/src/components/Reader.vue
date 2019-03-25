@@ -7,9 +7,10 @@
     <h3>{{root}}</h3>
     <h2>Ordered Products</h2>
     <el-row :gutter="12">
-      <el-col v-if="messages[0]" :span="8" v-for="product in products" v-bind:key="product.id">
+      <el-col :span="8" v-for="(product, index) in products" v-bind:key="product.id">
         <el-card shadow="hover">
-          Always
+          <h5>Product #{{index + 1}}</h5>
+          {{product.item.data.title}}, quantity: {{product.quantity}}
         </el-card>
       </el-col>
     </el-row>
@@ -24,7 +25,7 @@
           :color="'#0bbd87'"
           :size="'large'"
           :timestamp="message.timestamp | formatTimestampToDate">
-          {{message.status}} data: {{message.data}}
+          {{message.status}} by {{message.data.name}}
         </el-timeline-item>
       </el-timeline>
       <pre v-if="error">Error: {{error}}</pre>
