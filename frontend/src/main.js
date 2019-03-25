@@ -15,9 +15,27 @@ Vue.use(Element)
 Vue.config.productionTip = false
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/reader', component: Reader },
-  { path: '/writer', component: Writer }
+  { 
+    path: '/', 
+    component: Home,
+    meta: {
+      name: 'Home'
+    }, 
+  },
+  { 
+    path: '/reader', 
+    component: Reader,
+    meta: {
+      name: 'Reader'
+    }, 
+  },
+  { 
+    path: '/writer',
+    component: Writer,
+    meta: {
+      name: 'Writer'
+    },
+  }
 ]
 
 const router = new VueRouter({
