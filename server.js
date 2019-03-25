@@ -1,7 +1,11 @@
 const express = require('express')
 const app = express()
+const path = require('path');
 
-const PORT = 4000
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+const HOST = process.env.HOST || 'localhost';
+const PORT = process.env.PORT || 4000;
 
 const runPy = (cmd, root) => {
     return new Promise(function (success, nosuccess) {
@@ -22,7 +26,7 @@ const runPy = (cmd, root) => {
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello World! :-)');
+    res.sendFile(__dirname, 'frontend/dist/index.html');
 });
 
 app.get('/read', (req, res) => {
@@ -60,4 +64,4 @@ app.get('/write', (req, res) => {
 })
 
 
-app.listen(PORT, () => console.log('Application listening on port: ' + PORT))
+app.listen(PORT, () => console.log('Application listening at http://%s:%s/', HOST, PORT))
