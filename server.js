@@ -35,8 +35,16 @@ app.get('/read', (req, res) => {
     console.log("reading...");
     
     runPy('read', '').then(function (fromRunpy) {
-        console.log("fromRunpy", fromRunpy.toString());            
-        res.end(fromRunpy);
+        console.log("fromRunpy", fromRunpy);            
+        console.log("fromRunpy", fromRunpy.toString());
+        let data_string = fromRunpy.toString();
+        let root = data_string.substr(data_string.length - 82)
+        console.log("server root", root)
+        console.log("server root len", root.length)
+        // remove last empty char
+        root = root.slice(0, -1);
+
+        res.end(root);
         console.log("... end reading!");
     }).catch(function(err) {
         console.log("read card error", err);

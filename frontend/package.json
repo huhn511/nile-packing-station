@@ -11,7 +11,9 @@
     "axios": "^0.18.0",
     "element-ui": "^2.6.3",
     "vue": "^2.6.6",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "@iota/core": "^1.0.0-beta.11",
+    "mam.client.js": "iotaledger/mam.client.js"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
