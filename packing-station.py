@@ -1,20 +1,17 @@
 import RPi.GPIO as GPIO
 import MFRC522
 import signal
+import sys
+
 from textwrap import wrap
 
-# Set root to <blank>
-root="EZQMVPBWWXMMTNPZXRSAWIRWKWXKWAL9XRWCNFKZYYOHGKTBST9YKGGFX9WAMRUMGEJVGWIZHPJFGI9WL"
+# Get root
+root = str(sys.argv[2])
 
 
-# Show main menu
-print ("""
-1. Display root stored on the card 
-2. Write root to the cards
-""")
 
-# Get user selection
-ans=input("What would you like to do? ")
+# Get the command (read/write)
+command = str(sys.argv[1])
 
 continue_reading = True
        
@@ -126,7 +123,7 @@ while continue_reading:
         MIFAREReader.MFRC522_SelectTag(uid)
         
         # Display root stored on the card    
-        if ans==1:
+        if command == 'read':
             
             # Get root from card
             root=read_root()
@@ -136,7 +133,7 @@ while continue_reading:
             print(root)
         
         # Write root to the card
-        elif ans==2:
+        elif command == 'write':
             
             # Write root to the card
             write_root(root)
