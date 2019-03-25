@@ -9,6 +9,7 @@
         <el-button type="primary" @click="onSubmit">Write</el-button>
       </el-form-item>
     </el-form>
+    <pre>Error: {{error}}</pre>
   </div>
 </template>
 
@@ -21,7 +22,8 @@ export default {
     return {
       form: {
         root: ''
-      }
+      },
+      error: ''
     }
   },
   methods: {
@@ -31,10 +33,16 @@ export default {
     },
     writeData: function(root) {
       var self=this;
-      axios.get('http://localhost:4000/write')
+      axios.get('http://192.168.178.135:4000/write?root=' + this.form.root)
       .then(function (response) {
         // handle success
         console.log(response);
+        let data_string = response.data
+        if(data_string == "no root given") {
+          self.error = "no root given"
+        } else {
+
+        }
       })
       .catch(function (error) {
         // handle error

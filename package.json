@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/huhn511/nile-packing-station#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.16.4"
   }
 }

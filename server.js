@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
 const path = require('path');
+const cors = require('cors');
 
 app.use(express.static(path.join(__dirname, 'frontend/dist')));
+app.use(cors());
 
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 4000;
@@ -30,20 +32,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/read', (req, res) => {
-    let root = req.query.root
-    console.log("root", root);
-
-    if (root) {
-
-        res.send(root)
-        runPy('read', root).then(function (fromRunpy) {
-            console.log(fromRunpy.toString());            
-            res.end(fromRunpy);
-        });
-    } else {
-        res.send('no root given\n');
-    }
-
+    console.log("reading...");
+    
+    runPy('read', '').then(function (fromRunpy) {
+        console.log("fromRunpy", fromRunpy.toString());            
+        res.end(fromRunpy);
+        console.log("... end reading!");
+    }).catch(function(err) {
+        console.log("read card error", err);
+    });
 })
 
 app.get('/write', (req, res) => {
@@ -58,7 +55,7 @@ app.get('/write', (req, res) => {
             res.end(fromRunpy);
         });
     } else {
-        res.send('no root given\n');
+        res.send('no root given');
     }
 
 })
