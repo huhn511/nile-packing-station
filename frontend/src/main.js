@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Element from 'element-ui'
+import moment from 'moment'
 
 import App from './App.vue'
 import Home from '@/components/Home'
@@ -37,6 +38,13 @@ const routes = [
     },
   }
 ]
+
+
+Vue.filter('formatTimestampToDate', function (timestamp) {
+  if (timestamp) {
+    return moment(timestamp).format('MMMM Do YYYY, h:mm:ss a')
+  }
+})
 
 const router = new VueRouter({
   routes // short for `routes: routes`

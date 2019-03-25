@@ -41,6 +41,12 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+html {
+  font-family: 'Nunito', sans-serif;
+}
+
 body {
     margin: 0px;
 }

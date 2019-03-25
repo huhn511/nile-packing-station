@@ -1,8 +1,34 @@
 <template>
-  <div class="reader">
+  <div 
+    class="reader"
+    v-loading="loading"
+    >
     <h1>Reader</h1>
-    <p>root: {{root}}</p>
-    <pre>{{messages}}</pre>
+    <h3>{{root}}</h3>
+    <h2>Ordered Products</h2>
+    <el-row :gutter="12">
+      <el-col v-if="messages[0]" :span="8" v-for="product in products" v-bind:key="product.id">
+        <el-card shadow="hover">
+          Always
+        </el-card>
+      </el-col>
+    </el-row>
+    <h2>Order History</h2>
+    <div class="block">
+      <el-timeline>
+        <el-timeline-item
+          v-for="(message, index) in sortedMessages"
+          :key="index"
+          :icon="''"
+          :type="'primary'"
+          :color="'#0bbd87'"
+          :size="'large'"
+          :timestamp="message.timestamp | formatTimestampToDate">
+          {{message.status}} data: {{message.data}}
+        </el-timeline-item>
+      </el-timeline>
+      <pre v-if="error">Error: {{error}}</pre>
+    </div>
   </div>
 </template>
 
@@ -16,7 +42,9 @@ export default {
     return {
       root: '',
       loading: false,
-      messages: []
+      messages: [],
+      products: [],
+      error: ''
     }
   },
   mounted() {
@@ -28,9 +56,7 @@ export default {
       axios.get('http://192.168.178.135:4000/read')
       .then(function (response) {
         // handle success
-        console.log(response);
         self.root = response.data
-        console.log("root", self.root)
         self.loadData(self.root)
       })
       .catch(function (error) {
@@ -42,15 +68,10 @@ export default {
       });
     },
     loadData: async function(root) {
-          console.log("input root", root)
-          console.log("input root", root.length)
-          console.log("input root", root[0])
-          console.log("input root", root[root.length-1])
-          console.log("input root", root[root.length-2])
           this.loading = true
           if(root) {
               this.root = root
-              
+              this.message = []
               await fetch(this.root, 'restriced', 'TEST', this.appendToMessages, this.fetchComplete);
           } else {
               console.log("no root defined, show search and latest views.")
@@ -59,12 +80,24 @@ export default {
           
       },
       appendToMessages(message){
-          this.messages.push(message)
+        console.log("message", message)
+        this.messages.push(message)
       },
       fetchComplete() {
           this.loading = false
+          this.products = this.sortedMessages[0].data.cart
       }
-  }
+  },
+  computed: {
+    sortedMessages: function() {
+      function compare(a, b) {
+        if (a.timestamp > b.timestamp) return -1;
+        if (a.timestamp < b.timestamp) return 1;
+        return 0;
+      }
+      return this.messages.sort(compare);
+    }
+  },
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
