@@ -15,6 +15,8 @@ print ("""
 
 # Get user selection
 ans=input("What would you like to do? ")
+
+continue_reading = True
        
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
@@ -80,7 +82,10 @@ def read_block(blockID):
         
         str_data = ""
         int_data=(MIFAREReader.MFRC522_Read(blockID))
-        for number in int_data:
+        print "int_data"
+	print int_data
+	print "block id %i" % blockID
+	for number in int_data:
             str_data = str_data + chr(number)
         return str_data
         
@@ -121,7 +126,7 @@ while continue_reading:
         MIFAREReader.MFRC522_SelectTag(uid)
         
         # Display root stored on the card    
-        elif ans==1:
+        if ans==1:
             
             # Get root from card
             root=read_root()
@@ -131,7 +136,7 @@ while continue_reading:
             print(root)
         
         # Write root to the card
-        if ans==2:
+        elif ans==2:
             
             # Write root to the card
             write_root(root)
