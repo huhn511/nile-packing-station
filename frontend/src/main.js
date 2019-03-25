@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Element from 'element-ui'
 
 import App from './App.vue'
 import Home from '@/components/Home'
 import Reader from '@/components/Reader'
 import Writer from '@/components/Writer'
 
+import 'element-ui/lib/theme-chalk/index.css';
+
 Vue.use(VueRouter)
+Vue.use(Element)
 
 Vue.config.productionTip = false
 
