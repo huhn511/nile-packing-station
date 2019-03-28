@@ -1,7 +1,7 @@
 <template>
   <div 
     class="reader"
-    v-loading="loading"
+    v-loading="loading || waitForCard"
     >
     <h1>Reader</h1>
     <h3>{{root}}</h3>
@@ -43,6 +43,7 @@ export default {
     return {
       root: '',
       loading: false,
+      waitForCard: true,
       messages: [],
       products: [],
       error: ''
@@ -59,6 +60,7 @@ export default {
         // handle success
         self.root = response.data
         self.loadData(self.root)
+        self.waitForCard = false
       })
       .catch(function (error) {
         // handle error
