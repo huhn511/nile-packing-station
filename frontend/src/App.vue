@@ -1,29 +1,19 @@
 <template>
-  <div>
-    <el-menu :default-active="$route.path" :default-openeds="level1" theme="dark" mode="horizontal" router>
-        <template v-for="route in $router.options.routes" v-if="!route.meta.hidden">
-            <!-- 如果没有子路由或者只有一个子路由的, 就不生成子菜单 -->
-            <el-menu-item v-if="!route.children || route.children.length == 1" :index="route.path" :key="route.path">
-                <i class="el-icon-menu"></i>{{ route.meta.name }}
-            </el-menu-item>
-            <el-submenu v-else :index="route.path">
-                <template slot="title"><i class="el-icon-menu"></i>{{ route.meta.name }}</template>
-                <el-menu-item v-for="child in route.children" v-if="!child.meta.hidden" :index="route.path + '/' + child.path" :key="route.path + '/' + child.path">{{ child.meta.name }}</el-menu-item>
-            </el-submenu>
-        </template>
-    </el-menu>
-    <el-main>
-        <router-view></router-view>
-    </el-main>
+  <div id="app" class='container'>
+    <nav-bar></nav-bar>
+    <div class="main">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'app',
   components: {
-    
+    NavBar
   },
   data() {
     return {
@@ -49,5 +39,37 @@ html {
 
 body {
     margin: 0px;
+}
+
+.main {
+  margin-top: 70px;
+  padding-top: 24px;
+}
+
+:root {
+  --primary: #139B48;
+  --primary-2: #A2CF6F;
+  --secondary: #0B5D9E;
+  --secondary-2: #5AB0B2;
+  --dark: #081C1D;
+  --darker: #0F3535;
+  --light: #E2E2E2;
+  --white: #FFFFFF;
+  --white_5: rgba(255,255,255,.05);
+  --white_10: rgba(255,255,255,.1);
+  --white_25: rgba(255,255,255,.25);
+  --white_50: rgba(255,255,255,.5);
+  --red: #F16465;
+  --orange: #E69255;
+  --yellow: #E6BE54;
+  --purple: #8F60A8;
+
+  --border-radius: 10px;
+  --border-radius-sm: 5px;
+
+  --box-shadow: 0 3px 6px rgba(0,0,0,.15);
+
+  --transition-in-out: all 0.3s ease-in-out;
+
 }
 </style>
