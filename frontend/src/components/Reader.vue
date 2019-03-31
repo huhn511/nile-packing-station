@@ -184,7 +184,9 @@ export default {
         }
       });
       this.loading = false;
-      this.products = this.sortedMessages[0].data.cart;
+      this.order = this.sortedMessages[0];
+      this.products = this.order.data.cart;
+      
     }
   },
   computed: {
