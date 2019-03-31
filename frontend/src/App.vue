@@ -32,6 +32,7 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import "../node_modules/leaflet/dist/leaflet.css";
 
 html {
   font-family: 'Nunito', sans-serif;

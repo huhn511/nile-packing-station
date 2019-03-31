@@ -44,39 +44,82 @@
       </el-col>
     </el-row>
 
-    <h2>Order History</h2>
-    <div class="block">
-      <el-timeline>
-        <el-timeline-item
-          v-for="(message, index) in sortedMessages"
-          :key="index"
-          :icon="''"
-          :type="'primary'"
-          :color="'#0bbd87'"
-          :size="'large'"
-          :timestamp="message.timestamp | formatTimestampToDate"
-        >{{message.status}} by {{message.data.name}}</el-timeline-item>
-      </el-timeline>
-      <pre v-if="error">Error: {{error}}</pre>
-    </div>
+    <el-row>
+      <el-col :span="12">
+        <h2>Delivery destination</h2>
+        <l-map
+          :zoom="zoom"
+          :center="center"
+          @update:center="centerUpdate"
+          @update:zoom="zoomUpdate"
+          style="height: 250px"
+        >
+          <l-tile-layer :url="url" :attribution="attribution"/>
+          <l-marker :lat-lng="origin">
+            <l-popup>
+              <div @click="innerClick">I am a popup</div>
+            </l-popup>
+          </l-marker>
+          <l-marker :lat-lng="destination">
+            <l-tooltip :options="{permanent: true, interactive: true}">
+              <div @click="innerClick">Destination</div>
+            </l-tooltip>
+          </l-marker>
+        </l-map>
+      </el-col>
+      <el-col :span="12">
+        <h2>Order History</h2>
+        <el-timeline>
+          <el-timeline-item
+            v-for="(message, index) in sortedMessages"
+            :key="index"
+            :icon="''"
+            :type="'primary'"
+            :color="'#0bbd87'"
+            :size="'large'"
+            :timestamp="message.timestamp | formatTimestampToDate"
+          >{{message.status}} by {{message.data.name}}</el-timeline-item>
+        </el-timeline>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from "vue2-leaflet";
+
 const axios = require("axios");
 import { fetch } from "@/utils/MAM";
+const iotaAreaCodes = require("@iota/area-codes");
 
 export default {
   name: "Reader",
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LPopup,
+    LTooltip
+  },
   data() {
     return {
+      form: {},
       root: "",
       loading: false,
       waitForCard: true,
       order: {},
       messages: [],
       products: [],
-      error: ""
+      error: "",
+      zoom: 13,
+      center: { lat: 52.529562, lng: 13.413047 },
+      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      currentZoom: 11.5,
+      currentCenter: { lat: 52.529562, lng: 13.413047 },
+      destination: { lat: 52.529562, lng: 13.413047 },
+      origin: { lat: 52.529562, lng: 13.413047 }
     };
   },
   mounted() {
@@ -101,7 +144,7 @@ export default {
 
       // remove this
       self.root =
-        "UKIXRWLNOIIP9OZGBBDGZGNLOSHMUZ9SMEEJDISWXRRWWAEPGRUCVBZFRMGDYKJAPBNKCDXBOIM9UOKJJ";
+        "KMZHPYCFZOKULEVYKQFZVNRYWXNGAUCVDVOTBNUNKTGNMLIWIPM9NGWYCFRXXVLMVKME9ETGVVVKRIPYB";
       self.loadData(self.root);
       self.waitForCard = false;
       return;
@@ -148,7 +191,6 @@ export default {
             }
           });
         }
-
       } else {
         console.log("no root defined, show search and latest views.");
         this.loading = false;
@@ -186,7 +228,24 @@ export default {
       this.loading = false;
       this.order = this.sortedMessages[0];
       this.products = this.order.data.cart;
-      
+      let iac = this.order.data.shipping_location;
+      console.log("order", this.order);
+      console.log("iac", iac);
+      let coords = iotaAreaCodes.decode(iac);
+      this.destination = { lat: coords.latitude, lng: coords.longitude };
+      this.center = { lat: coords.latitude, lng: coords.longitude };
+      console.log("this.destination", this.destination);
+    },
+    confirmPackaging() {},
+
+    zoomUpdate(zoom) {
+      this.currentZoom = zoom;
+    },
+    centerUpdate(center) {
+      this.currentCenter = center;
+    },
+    innerClick() {
+      alert("Click!");
     }
   },
   computed: {
