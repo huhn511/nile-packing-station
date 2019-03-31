@@ -6,14 +6,41 @@
       <el-col :span="12">
         <h2>Information</h2>
         <el-form ref="form" :model="form" label-position="top">
-          <el-form-item label="ID">
-            <el-input placeholder="Please input" v-model="order.data.id" class="input-with-select">
-              <template slot="prepend">
-                <i class="el-icon-edit"></i>
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="Name">
+          <div>
+            <el-col :span="11">
+              <el-form-item label="ID">
+                <el-input
+                  placeholder="Please input"
+                  v-model="order.data.id"
+                  class="input-with-select"
+                  :disabled="true"
+                >
+                  <template slot="prepend">
+                    <i class="el-icon-edit"></i>
+                  </template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item label="Status">
+                <el-input
+                  placeholder="Please input"
+                  v-model="order.status"
+                  class="input-with-select"
+                  :disabled="true"
+                >
+                  <el-tag type="info">Tag Three</el-tag>
+
+                  <template slot="prepend">
+                    <i class="el-icon-edit"></i>
+                  </template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+
+          <el-form-item label="Customer">
             <el-input
               placeholder="Please input"
               v-model="order.data.name"
@@ -68,7 +95,7 @@
         </l-map>
       </el-col>
       <el-col :span="12">
-        <h2>Order History</h2>
+        <h2>History</h2>
         <el-timeline>
           <el-timeline-item
             v-for="(message, index) in sortedMessages"
@@ -146,12 +173,11 @@ export default {
     readCard: function(root) {
       var self = this;
 
-      // remove this
-      self.root =
-        "KMZHPYCFZOKULEVYKQFZVNRYWXNGAUCVDVOTBNUNKTGNMLIWIPM9NGWYCFRXXVLMVKME9ETGVVVKRIPYB";
-      self.loadData(self.root);
-      self.waitForCard = false;
-      return;
+      // enable this for develop the frontend
+      //self.root = "KMZHPYCFZOKULEVYKQFZVNRYWXNGAUCVDVOTBNUNKTGNMLIWIPM9NGWYCFRXXVLMVKME9ETGVVVKRIPYB";
+      //self.loadData(self.root);
+      //self.waitForCard = false;
+      //return;
 
       axios
         .get("http://192.168.178.135:4000/read")
