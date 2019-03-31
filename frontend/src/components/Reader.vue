@@ -107,7 +107,11 @@ export default {
       root: "",
       loading: false,
       waitForCard: true,
-      order: {},
+      order: {
+        data: {
+          id: 0
+        }
+      },
       messages: [],
       products: [],
       error: "",
