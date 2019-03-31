@@ -27,6 +27,20 @@ export default {
       error: ''
     }
   },
+  mounted() {
+    // Send a PUT request to HUE bridge
+    console.log("aus");
+    axios({
+      method: "put",
+      url:
+        "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+      data: {
+        on: true,
+        bri: 254,
+        xy: [0.54, 0.45] //blue,
+      }
+    });
+  },
   methods: {
     onSubmit() {
       this.loading = true
