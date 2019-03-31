@@ -76,11 +76,23 @@ export default {
       order: {},
       messages: [],
       products: [],
-      error: "",
-      checkboxGroup: []
+      error: ""
     };
   },
   mounted() {
+    // Send a PUT request to HUE bridge
+    console.log("blue");
+    axios({
+      method: "put",
+      url:
+        "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+      data: {
+        on: true,
+        bri: 254,
+        xy: [0.15, 0.15] //blue,
+      }
+    });
+
     this.readCard();
   },
   methods: {
@@ -112,19 +124,45 @@ export default {
     },
     loadData: async function(root) {
       this.loading = true;
+
       if (root) {
         this.root = root;
         this.message = [];
-        await fetch(
-          this.root,
-          "restriced",
-          "TEST",
-          this.appendToMessages,
-          this.fetchComplete
-        );
+        try {
+          await fetch(
+            this.root,
+            "restriced",
+            "TEST",
+            this.appendToMessages,
+            this.fetchComplete
+          );
+        } catch (err) {
+          axios({
+            method: "put",
+            url:
+              "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+            data: {
+              on: true,
+              bri: 254,
+              xy: [0.675, 0.322] //red
+            }
+          });
+        }
+
       } else {
         console.log("no root defined, show search and latest views.");
         this.loading = false;
+        // Send a PUT request to HUE bridge
+        axios({
+          method: "put",
+          url:
+            "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+          data: {
+            on: true,
+            bri: 254,
+            xy: [0.675, 0.322] //red
+          }
+        });
       }
     },
     appendToMessages(message) {
@@ -132,12 +170,21 @@ export default {
       this.messages.push(message);
     },
     fetchComplete() {
+      // Send a PUT request to HUE bridge
+      console.log("green");
+
+      axios({
+        method: "put",
+        url:
+          "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+        data: {
+          on: false,
+          bri: 254,
+          xy: [0.2, 0.7] //gree
+        }
+      });
       this.loading = false;
-      this.order = this.sortedMessages[0];
-      this.products = this.order.data.cart;
-    },
-    confirmPackaging() {
-      alert("confirmPackaging")
+      this.products = this.sortedMessages[0].data.cart;
     }
   },
   computed: {

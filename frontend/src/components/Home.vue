@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Nile Packing Station</h1>
-    <p>Application to support and track the packing process. </p>
+    <p>Application to support and track the packing process.</p>
     <div class="section section--use-case" id="use-cases">
       <div class="container">
         <el-row>
@@ -14,7 +14,7 @@
                     <span class="counter">1</span>All orders on a RFID Card
                   </span>
                 </template>
-                <div> The MAM root of an order can be written on an RFID card. With the READ function, you can scan a card and gets information about it through the messages in the MAM channel.</div>
+                <div>The MAM root of an order can be written on an RFID card. With the READ function, you can scan a card and gets information about it through the messages in the MAM channel.</div>
               </el-collapse-item>
               <el-collapse-item name="2">
                 <template slot="title">
@@ -44,19 +44,33 @@
 </template>
 
 <script>
+const axios = require("axios");
+
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       activeNames: ["1", "2", "3"]
-    }
+    };
+  },
+  mounted() {
+    // Send a PUT request to HUE bridge
+    console.log("aus");
+    axios({
+      method: "put",
+      url:
+        "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
+      data: {
+        on: false
+      }
+    });
   },
   methods: {
     handleChange(val) {
       console.log(val);
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
