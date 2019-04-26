@@ -44,7 +44,6 @@
 </template>
 
 <script>
-const axios = require("axios");
 
 export default {
   name: "Home",
@@ -52,18 +51,6 @@ export default {
     return {
       activeNames: ["1", "2", "3"]
     };
-  },
-  mounted() {
-    // Send a PUT request to HUE bridge
-    console.log("aus");
-    axios({
-      method: "put",
-      url:
-        "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
-      data: {
-        on: false
-      }
-    });
   },
   methods: {
     handleChange(val) {

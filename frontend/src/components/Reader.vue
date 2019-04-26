@@ -155,18 +155,6 @@ export default {
   },
   mounted() {
     // Send a PUT request to HUE bridge
-    console.log("blue");
-    axios({
-      method: "put",
-      url:
-        "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
-      data: {
-        on: true,
-        bri: 254,
-        xy: [0.15, 0.15] //blue,
-      }
-    });
-
     this.readCard();
   },
   methods: {
@@ -180,7 +168,7 @@ export default {
       //return;
 
       axios
-        .get("http://192.168.178.135:4000/read")
+        .get("http://192.168.178.28:4000/read")
         .then(function(response) {
           // handle success
           self.root = response.data;
@@ -210,31 +198,13 @@ export default {
             this.fetchComplete
           );
         } catch (err) {
-          axios({
-            method: "put",
-            url:
-              "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
-            data: {
-              on: true,
-              bri: 254,
-              xy: [0.675, 0.322] //red
-            }
-          });
+          
         }
       } else {
         console.log("no root defined, show search and latest views.");
         this.loading = false;
         // Send a PUT request to HUE bridge
-        axios({
-          method: "put",
-          url:
-            "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
-          data: {
-            on: true,
-            bri: 254,
-            xy: [0.675, 0.322] //red
-          }
-        });
+        
       }
     },
     appendToMessages(message) {
@@ -245,16 +215,7 @@ export default {
       // Send a PUT request to HUE bridge
       console.log("green");
 
-      axios({
-        method: "put",
-        url:
-          "http://192.168.178.41/api/SmDBRI79hLYzldlX4aEUB8sTAScZJhULAot8hzIL/lights/1/state",
-        data: {
-          on: false,
-          bri: 254,
-          xy: [0.2, 0.7] //gree
-        }
-      });
+    
       this.loading = false;
       this.order = this.sortedMessages[0];
       this.products = this.order.data.cart;
