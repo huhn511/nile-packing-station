@@ -168,7 +168,7 @@ export default {
       //return;
 
       axios
-        .get("http://192.168.178.28:4000/read")
+        .get("http://192.168.178.39:4000/read")
         .then(function(response) {
           // handle success
           self.root = response.data;

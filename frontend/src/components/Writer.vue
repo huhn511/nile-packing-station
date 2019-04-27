@@ -44,7 +44,7 @@ export default {
     },
     writeData: function(root) {
       var self=this;
-      axios.get('http://192.168.178.28:4000/write?root=' + this.form.root)
+      axios.get('http://192.168.178.39:4000/write?root=' + this.form.root)
       .then(function (response) {
         // handle success
         console.log(response);
