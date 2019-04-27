@@ -15,6 +15,7 @@
 
 <script>
 const axios = require('axios');
+import { packing_station_url } from '../config.json';
 
 export default {
   name: 'Writer',
@@ -44,7 +45,7 @@ export default {
     },
     writeData: function(root) {
       var self=this;
-      axios.get('http://192.168.178.39:4000/write?root=' + this.form.root)
+      axios.get(packing_station_url + '/write?root=' + this.form.root)
       .then(function (response) {
         // handle success
         console.log(response);

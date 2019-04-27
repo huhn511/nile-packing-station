@@ -114,6 +114,7 @@
 
 <script>
 import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from "vue2-leaflet";
+import { packing_station_url } from '../config.json';
 
 const axios = require("axios");
 import { fetch } from "@/utils/MAM";
@@ -168,7 +169,7 @@ export default {
       //return;
 
       axios
-        .get("http://192.168.178.39:4000/read")
+        .get(packing_station_url + '/read')
         .then(function(response) {
           // handle success
           self.root = response.data;
