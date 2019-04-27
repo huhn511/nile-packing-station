@@ -4,8 +4,24 @@ import MFRC522
 import signal
 import sys
 
+import time
+from neopixel import *
+
+# LED strip configuration:
+LED_COUNT      = 12      # Number of LED pixels.
+LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
+#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
+LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
+LED_DMA        = 5      # DMA channel to use for generating signal (try 10)
+LED_BRIGHTNESS = 100     # Set to 0 for darkest and 255 for brightest
+LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
+
 GPIO.setwarnings(False)
 
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+# Intialize the library (must be called once before other functions).
+strip.begin()
 
 # Get the command (read/write)
 command = str(sys.argv[1])
@@ -14,6 +30,15 @@ continue_reading = True
 
 # Capture SIGINT for cleanup when the script is aborted
 
+# Define functions which animate LEDs in various ways.
+def colorWipe(strip, color, wait_ms=50):
+    """Wipe color across display a pixel at a time."""
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, color)
+        strip.show()
+        time.sleep(wait_ms/1000.0)
+
+colorWipe(strip, Color(255, 255, 255))
 
 def end_read(signal, frame):
     global continue_reading
@@ -39,7 +64,7 @@ def write_root(root):
     write_block(12, mylist[3])
     write_block(13, mylist[4])
     write_block(14, mylist[5])
-
+    colorWipe(strip, Color(250, 0, 0))
 
 # Function to write single block to RFID tag
 def write_block(blockID, str_data):
@@ -53,9 +78,9 @@ def write_block(blockID, str_data):
         for letter in str_data:
             data.append(ord(letter))
         MIFAREReader.MFRC522_Write(blockID, data)
-
     else:
         print "Authentication error"
+	colorWipe(strip, Color(0, 255, 0))
 
 
 # Function that reads the root
@@ -68,7 +93,7 @@ def read_root():
     root = root + read_block(12)
     root = root + read_block(13)
     root = root + read_block(14)
-
+    colorWipe(strip, Color(255, 0, 0))
     # Return the first 81 characters of the retrieved root
     return root[0:81]
 
@@ -93,7 +118,7 @@ def read_block(blockID):
 
     else:
         print "Authentication error"
-
+	colorWipe(strip, Color(0, 255, 0))
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
@@ -129,7 +154,7 @@ while continue_reading:
 
         # Display root stored on the card
         if command == 'read':
-
+            colorWipe(strip, Color(0, 0, 255))
             # Get root from card
             root = read_root()
 
@@ -138,6 +163,7 @@ while continue_reading:
             print(root)
         # Write root to the card
         elif command == 'write':
+	    colorWipe(strip, Color(255, 255, 0))
             root = str(sys.argv[2])
             # Write root to the card
             write_root(root)
