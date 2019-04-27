@@ -28,6 +28,12 @@ command = str(sys.argv[1])
 
 continue_reading = True
 
+# Display states with color
+if command == 'read':
+    colorWipe(strip, Color(0, 0, 255))
+elif command == 'write':
+    colorWipe(strip, Color(255, 255, 0))
+
 # Capture SIGINT for cleanup when the script is aborted
 
 # Define functions which animate LEDs in various ways.
