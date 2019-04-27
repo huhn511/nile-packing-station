@@ -2,12 +2,12 @@
   <div class="reader" v-loading="loading || waitForCard">
     <h1>Order</h1>
 
-    <el-row>
+    <el-row :gutter="30">
       <el-col :span="12">
         <h2>Information</h2>
         <el-form ref="form" :model="form" label-position="top">
-          <div>
-            <el-col :span="11">
+          <el-row :gutter="30">
+            <el-col :span="12">
               <el-form-item label="ID">
                 <el-input
                   placeholder="Please input"
@@ -21,8 +21,7 @@
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
+            <el-col :span="12">
               <el-form-item label="Status">
                 <el-input
                   placeholder="Please input"
@@ -38,7 +37,7 @@
                 </el-input>
               </el-form-item>
             </el-col>
-          </div>
+          </el-row>
 
           <el-form-item label="Customer">
             <el-input
@@ -71,7 +70,7 @@
       </el-col>
     </el-row>
 
-    <el-row>
+    <el-row :gutter="30">
       <el-col :span="12">
         <h2>Delivery destination</h2>
         <l-map
@@ -253,10 +252,20 @@ export default {
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .el-checkbox {
   width: 100%;
-  margin: 5px 5px 5px 10px;
+  margin-left: 0 !important;
+  margin-bottom: 10px;
+}
+
+.el-timeline {
+  padding-left: 5px;
+}
+
+.el-form-item__label {
+  line-height: 14px !important;
+  font-weight: bold !important;
 }
 
 .checkbox-list {

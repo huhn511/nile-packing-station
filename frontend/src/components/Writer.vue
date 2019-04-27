@@ -2,12 +2,22 @@
   <div class="writer">
     <h1>Writer</h1>
     <el-form v-loading="loading" :inline="true" :model="form" class="form">
-      <el-form-item label="Root">
-        <el-input v-model="form.root" placeholder="ABC9...."></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Write</el-button>
-      </el-form-item>
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <el-form-item label="Root">
+            <el-input v-model="form.root" placeholder="ABC9...." style="width: 100%"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">Write</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      
+      
     </el-form>
     <pre v-if="error">Error: {{error}}</pre>
   </div>
@@ -73,5 +83,11 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+  .el-form-item {
+    width: 100%;
+  }
+  .el-form-item__content {
+    width: 100% !important;
+  }
 </style>
